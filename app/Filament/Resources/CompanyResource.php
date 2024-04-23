@@ -66,8 +66,8 @@ class CompanyResource extends Resource
                         // TextInput::make('default_log')->columnSpanFull()->numeric()
                     ]
                 ),
-                self::formTagsField()
-                ->columnSpan(['md' => 2, 'lg' => 3]), 
+                self::formTagsField(),
+                
                 SpatieMediaLibraryFileUpload::make('avatar')->multiple()->collection('avatars')->columnSpanFull()->label('медиа')
             ]);
     }
@@ -79,7 +79,7 @@ class CompanyResource extends Resource
                 TextColumn::make('full_name'),
                 TextColumn::make('full_adress'),
                 TextColumn::make('phone'),
-                self::tagsColumn(),
+                // self::tagsColumn(),
 
             ])
             ->filters([

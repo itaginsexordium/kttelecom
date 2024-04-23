@@ -14,4 +14,10 @@ class Tag extends Model
         'model',
         'model_id'
     ];
+
+
+    public function taggable()
+    {
+        return $this->morphTo('taggable', 'model', 'model_id');
+    }
 }

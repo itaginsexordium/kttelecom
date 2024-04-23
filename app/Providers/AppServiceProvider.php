@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Company;
+use App\Models\Task;
 use App\Models\User;
 use App\Observers\TagObserver;
 use Illuminate\Support\Facades\Gate;
@@ -24,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Company::observe(TagObserver::class);
+        Task::observe(TagObserver::class);
         app()->setLocale('ru');
         Gate::before(function (User $user, string $ability) {
             return $user->isSuperAdmin() ? true: null;

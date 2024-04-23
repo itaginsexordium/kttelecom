@@ -27,11 +27,15 @@ use Illuminate\Validation\Rules\Password;
 
 class UserResource extends Resource
 {
+
+    public static ?string $label = 'Пользователь';
+    protected static ?string $pluralModelLabel = 'Пользователи';
+
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
-    protected static bool | Closure $enablePasswordUpdates = false;
+    protected static bool | Closure $enablePasswordUpdates = true;
 
     protected static Closure | null $extendFormCallback = null;
 
@@ -48,8 +52,8 @@ class UserResource extends Resource
             $schema = [
                 'left' => Card::make([
                     'name' => TextInput::make('name')
-                        ->required(),
-                    'email' => TextInput::make('email')
+                        ->required()->label('название'),
+                    'email' => TextInput::make('email')->label('mail')
                         ->required()
                         ->unique(ignoreRecord: true),
                     'password' => TextInput::make('password')
@@ -61,22 +65,23 @@ class UserResource extends Resource
                     'new_password_group' => Group::make([
                         'new_password' => TextInput::make('new_password')
                             ->password()
-                            ->label('New Password')
+                            ->label('новый пароль')
                             ->nullable()
                             ->rule(Password::default())
                             ->dehydrated(false),
                         'new_password_confirmation' => TextInput::make('new_password_confirmation')
                             ->password()
-                            ->label('Confirm New Password')
+                            ->label('повтор нового пароля')
                             ->rule('required', fn ($get) => !! $get('new_password'))
                             ->same('new_password')
                             ->dehydrated(false),
-                    ])->visible(static::$enablePasswordUpdates)
+                    ])
+                    ->visible(static::$enablePasswordUpdates)
                 ])->columnSpan(8),
                 'right' => Card::make([
 
                 Select::make('roles')->multiple()->relationship('roles', 'name')->searchable()->preload()->columnSpanFull()->label('роли'),
-                    'created_at' => Placeholder::make('created_at')
+                    'created_at' => Placeholder::make('created_at')->label('создан')
                         ->content(fn ($record) => $record?->created_at?->diffForHumans() ?? new HtmlString('&mdash;'))
                 ])->columnSpan(4),
             ];
@@ -94,6 +99,8 @@ class UserResource extends Resource
     {
         return $table
         ->columns([
+
+            TextColumn::make('id'),
             TextColumn::make('name')
                 ->searchable(),
             TextColumn::make('email')

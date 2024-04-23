@@ -27,13 +27,7 @@ trait HasTags
             ->options(Tag::pluck('name', 'id'))
             ->multiple()
             ->searchable()
-            ->preload()
-            ->createOptionForm([
-                TextInput::make('name')
-                    ->lazy()
-                    ->afterStateUpdated(fn ($set, $state) => $set('name', ucfirst($state)))
-                    ->required(),
-            ]);
+            ->preload();
     }
  
     public static function changeTagsAction() : BulkAction

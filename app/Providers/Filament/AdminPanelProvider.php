@@ -37,12 +37,14 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
+            ->brandLogo('https://www.kt.kg/static/assets/img/logo.png')
+            ->darkModeBrandLogo('https://yt3.googleusercontent.com/ytc/AIdro_m1lxT4Fgc1XOPQm5BhM6nfMlDkLh4-2ma4YdVD=s900-c-k-c0x00ffffff-no-rj')
             ->darkMode(true)
             ->id('admin')
             ->path('admin')
             ->login()
             ->colors([
-                'primary' => Color::Lime,
+                'primary' => Color::Neutral,
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')

@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\HasMedia;
 
-class Task extends Model
+class Task extends Model implements HasMedia
 {
-    use HasFactory;
+    use HasFactory, InteractsWithMedia;
 
     protected $fillable = [
         'name',
@@ -23,8 +25,19 @@ class Task extends Model
         return $this->belongsTo(TaskList::class, 'task_list_id');
     }
 
-    public function links()
+    public function parent()
     {
-        return $this->morphMany(Links::class, 'linkable');
+        return $this->belongsTo(Task::class, 'parent_id');
+    }
+
+    public function tags()
+    {
+        return $this->morphToMany(Tag::class, 'taggable');
+    }
+
+
+    public function tag()
+    {
+        return $this->morphOne(Tag::class, 'taggable', 'model', 'model_id');
     }
 }

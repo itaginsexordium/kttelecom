@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Filament\Resources\CompanyResource\Pages;
+namespace App\Filament\Resources\TaskResource\Pages;
 
 use App\Filament\Resources\CompanyResource;
+use App\Filament\Resources\TaskResource;
 use App\Filament\Resources\Traits\HasTags;
 use App\Models\Tag;
 use Filament\Actions\EditAction;
@@ -22,11 +23,11 @@ use Filament\Infolists\Components\TextEntry;
 use Filament\Support\Enums\VerticalAlignment;
 use Illuminate\Database\Eloquent\Model;
 
-class ViewCompany extends ViewRecord
+class ViewTask extends ViewRecord
 {
     use HasTags;
 
-    protected static string $resource = CompanyResource::class;
+    protected static string $resource = TaskResource::class;
 
     public function infolist(Infolist $infolist): Infolist
     {
@@ -34,13 +35,17 @@ class ViewCompany extends ViewRecord
 
             Fieldset::make('Основные')->schema(
                 [
-                    TextEntry::make('last_name')->translateLabel()->label('фамилия'),
-                    TextEntry::make('first_name')->translateLabel()->label('имя'),
-
-                    TextEntry::make('address')->label('улица'),
-                    TextEntry::make('apartments')->label('апартаменты'),
-                    KeyValueEntry::make('pass_data')->columnSpanFull()->label('паспортные данные'),
-
+                    TextEntry::make('name')->label('название')->columnSpanFull(),
+                    TextEntry::make('description')->label('описание')
+                        ->badge()->color('info')
+                        ->html()->alignCenter()
+                        ->columnSpanFull(),
+                        Fieldset::make('время')->schema([
+                            TextEntry::make('from')->dateTime('H:i d.m-y')->label('начало'),
+                            TextEntry::make('to')->dateTime('H:i d.m-y')->label('конец'),
+                            TextEntry::make('created_at')->dateTime('H:i d.m-y')->label('создано'),
+                            TextEntry::make('updated_at')->dateTime('H:i d.m-y')->label('изменено'),
+                        ])->columnSpanFull(),
                 ]
             )->columns(2)->columnSpan(1),
             Fieldset::make('бизнесс процесс')->schema([
@@ -48,15 +53,13 @@ class ViewCompany extends ViewRecord
                     ->badge()
                     ->color('info')
                     ->label('Книга')
-                    ->icon('heroicon-o-book-open')
-                    ->columnSpanFull(),
+                    ->icon('heroicon-o-book-open'),
+                TextEntry::make('parent.name')
+                    ->badge()
+                    ->color('info')
+                    ->label('родительская задачач')
+                    ->icon('heroicon-o-book-open'),
             ])->columnSpan(1)->columns(2),
-            Fieldset::make('контактные данные')->schema(
-                [
-                    TextEntry::make('phone')->columnSpan(2)->label('контактный телефон'),
-                    TextEntry::make('email')->columnSpan(2)->label('почта'),
-                ]
-            )->columnSpan(1),
             SpatieMediaLibraryImageEntry::make('avatar')->collection('avatars')->label('медиа'),
             RepeatableEntry::make('tags')->schema([
                 TextEntry::make('name')->hiddenLabel(true),
