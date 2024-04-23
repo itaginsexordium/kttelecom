@@ -26,17 +26,6 @@ class Company extends Model implements HasMedia
         'pass_data' => 'array',
     ];
 
-    public function linksCreate()
-    {
-        return $this->links()->create(['linkable_id' => $this->id, 'linkable_type' =>  get_class($this)]);
-    }
-
-
-    public function links()
-    {
-        return $this->morphMany(Links::class, 'linkable');
-    }
-
     public function tags()
     {
         return $this->morphToMany(Tag::class, 'taggable');

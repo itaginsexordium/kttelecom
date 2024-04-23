@@ -10,8 +10,8 @@ class AuthServiceProvider extends ProvidersAuthServiceProvider
 {
 
     protected $policies = [
-        // 'Spatie\Permission\Models\Role' => RolePolicy::class,
-        // 'Spatie\Permission\Models\Permission' => PermissionPolicy::class,
+        'Spatie\Permission\Models\Role' => RolePolicy::class,
+        'Spatie\Permission\Models\Permission' => PermissionPolicy::class,
     ];
 
     /**
